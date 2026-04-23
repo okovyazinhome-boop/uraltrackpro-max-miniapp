@@ -1,0 +1,1863 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<title>УралТрекПро mini-app</title>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  button {
+    font: inherit;
+    cursor: pointer;
+  }
+
+  body {
+    margin: 0;
+    padding: 32px;
+    background: #f4f4f5;
+    color: #18181b;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  h2 {
+    max-width: 980px;
+    margin: 0 0 12px;
+    font-size: 28px;
+    line-height: 1.15;
+    letter-spacing: 0;
+  }
+
+  .subtitle {
+    max-width: 980px;
+    margin: 0 0 28px;
+    color: #71717a;
+    font-size: 16px;
+    line-height: 1.45;
+    font-weight: 500;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+    align-items: start;
+  }
+
+  .card {
+    border: 1px solid #d4d4d8;
+    border-radius: 18px;
+    background: #ffffff;
+    overflow: hidden;
+  }
+
+  .card-image {
+    padding: 20px;
+    background: #e4e4e7;
+  }
+
+  .card-body {
+    padding: 18px 22px 22px;
+  }
+
+  .card-body h3,
+  .section h3 {
+    margin: 0 0 10px;
+    font-size: 20px;
+    line-height: 1.2;
+    letter-spacing: 0;
+  }
+
+  .card-body p,
+  .section p {
+    margin: 0;
+    color: #71717a;
+    font-size: 14px;
+    line-height: 1.45;
+    font-weight: 500;
+  }
+
+  .section {
+    max-width: 980px;
+    margin-top: 24px;
+    padding-bottom: 36px;
+  }
+
+  @media (max-width: 430px) {
+    body {
+      padding: 24px 10px;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    .subtitle {
+      font-size: 15px;
+    }
+
+    .cards {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .card-image {
+      padding: 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<h2>Главный экран: shadcn-подход, больше воздуха</h2>
+<p class="subtitle">Исправлено: УралТрекПро, Inter, спокойная типографика, тонкие line-иконки, компактное нижнее меню.</p>
+
+<style>
+  .rto-preview {
+    --radius: 18px;
+    --ring: #7c3aed;
+    --muted: #71717a;
+    --border: #e4e4e7;
+    --surface: #ffffff;
+    --surface-2: #fafafa;
+    --text: #18181b;
+    --soft-ring: #ede9fe;
+    width: min(100%, 360px);
+    max-width: 100%;
+    margin: auto;
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    padding: 18px;
+    color: var(--text);
+    background: var(--surface-2);
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    position: relative;
+  }
+
+  .rto-preview.dark {
+    --muted: #a1a1aa;
+    --border: #27272a;
+    --surface: #09090b;
+    --surface-2: #111113;
+    --text: #fafafa;
+    --soft-ring: #241a3a;
+    background: var(--surface);
+  }
+
+  .rto-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .rto-header > div:first-child {
+    min-width: 0;
+  }
+
+  .rto-brand {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 500;
+    line-height: 1.2;
+    flex-wrap: wrap;
+    row-gap: 2px;
+  }
+
+  .rto-brand-link {
+    color: inherit;
+    font-weight: 620;
+    text-decoration: none;
+  }
+
+  .rto-brand-link:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  .rto-support-live {
+    color: var(--ring);
+    font-weight: 620;
+  }
+
+  .rto-sync-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: #22c55e;
+    flex: 0 0 auto;
+  }
+
+  .rto-title {
+    display: block;
+    margin-top: 4px;
+    font-size: 18px;
+    font-weight: 650;
+    line-height: 1.1;
+    letter-spacing: 0;
+    max-width: 250px;
+  }
+
+  .rto-icon-button {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface);
+    color: var(--text);
+  }
+
+  .rto-preview.dark .rto-icon-button {
+    background: #111113;
+    border-color: #3f3f46;
+    color: #fafafa;
+  }
+
+  .rto-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 0 0 auto;
+  }
+
+  .rto-icon-button svg {
+    width: 17px;
+    height: 17px;
+    stroke-width: 1.75;
+  }
+
+  .rto-card {
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    background: var(--surface);
+  }
+
+  .rto-meter-card {
+    position: relative;
+    height: 310px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 9px;
+    padding: 16px;
+  }
+
+  .rto-card-status {
+    position: absolute;
+    top: 14px;
+    left: 16px;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 520;
+    line-height: 1.2;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition: opacity .18s ease, transform .18s ease, visibility .18s ease;
+  }
+
+  .rto-card-status.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .rto-undo-button {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    color: var(--text);
+  }
+
+  .rto-preview.dark .rto-undo-button {
+    background: #18181b;
+    border-color: #3f3f46;
+    color: #fafafa;
+  }
+
+  .rto-undo-button svg {
+    width: 17px;
+    height: 17px;
+    stroke-width: 1.75;
+  }
+
+  .rto-ring {
+    position: relative;
+    width: 196px;
+    height: 196px;
+    border-radius: 999px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-shadow: none;
+    --rto-offset: 4.5;
+  }
+
+  .rto-progress {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .rto-progress-track,
+  .rto-progress-value {
+    fill: none;
+    cx: 60;
+    cy: 60;
+    r: 52;
+    stroke-width: 8;
+  }
+
+  .rto-progress-track {
+    stroke: transparent;
+  }
+
+  .rto-progress-value {
+    stroke: var(--ring);
+    stroke-linecap: round;
+    stroke-dasharray: 100;
+    stroke-dashoffset: var(--rto-offset);
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    filter: drop-shadow(0 10px 18px rgba(124, 58, 237, .38)) drop-shadow(0 0 28px rgba(124, 58, 237, .18));
+  }
+
+  .rto-ring-inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    border-radius: 999px;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .rto-kicker {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .rto-mode {
+    margin-top: 10px;
+    font-size: 21px;
+    font-weight: 620;
+    line-height: 1.1;
+    letter-spacing: 0;
+  }
+
+  .rto-time {
+    margin-top: 13px;
+    font-size: 32px;
+    font-weight: 650;
+    line-height: 1;
+    letter-spacing: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .rto-caption {
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .rto-status-row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 10px;
+    color: var(--muted);
+    font-size: 11.5px;
+    font-weight: 540;
+    line-height: 1.15;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .rto-status-row strong {
+    color: var(--text);
+    font-weight: 620;
+  }
+
+  .rto-status-row span {
+    white-space: nowrap;
+  }
+
+  .rto-status-row span:nth-child(2) {
+    justify-self: end;
+    text-align: right;
+  }
+
+  .rto-modes {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    margin-top: 14px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--surface);
+  }
+
+  .rto-toggle {
+    min-height: 38px;
+    border-radius: 0;
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    font-size: 9.5px;
+    font-weight: 600;
+    line-height: 1.1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .rto-toggle + .rto-toggle {
+    border-left: 1px solid var(--border);
+  }
+
+  .rto-toggle.active {
+    background: var(--text);
+    color: var(--surface);
+  }
+
+  .rto-separator {
+    height: 1px;
+    background: var(--border);
+    margin: 10px 0 3px;
+  }
+
+  .rto-nav {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .rto-nav-item {
+    min-height: 43px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    color: var(--muted);
+    border-radius: 10px;
+  }
+
+  .rto-nav-item.active {
+    color: var(--ring);
+    background: color-mix(in srgb, var(--ring) 11%, transparent);
+  }
+
+  .rto-nav-item svg {
+    width: 17px;
+    height: 17px;
+    stroke-width: 1.35;
+  }
+
+  .rto-nav-label {
+    font-size: 8px;
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: 0;
+    text-align: center;
+  }
+
+  .rto-sheet-backdrop {
+    position: absolute;
+    inset: 0;
+    border-radius: 30px;
+    background: rgba(9, 9, 11, .24);
+    -webkit-backdrop-filter: blur(5px) saturate(.88);
+    backdrop-filter: blur(5px) saturate(.88);
+    z-index: 4;
+  }
+
+  .rto-sheet {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    background: var(--surface);
+    padding: 10px 14px 14px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .18);
+    z-index: 5;
+    max-height: calc(100% - 20px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .rto-sheet-handle {
+    width: 38px;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--border);
+    margin: 0 auto 12px;
+  }
+
+  .rto-sheet-title {
+    font-size: 16px;
+    font-weight: 650;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .rto-sheet-row {
+    min-height: 38px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 0;
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-top: 1px solid var(--border);
+    background: transparent;
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 520;
+    text-align: left;
+    text-decoration: none;
+  }
+
+  .rto-sheet-row span {
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .rto-sheet-value {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+    min-width: 0;
+    white-space: nowrap;
+  }
+
+  .rto-sheet-select {
+    width: 100%;
+    max-width: 156px;
+    min-width: 0;
+    border: 0;
+    padding: 0 18px 0 0;
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-size: 12px;
+    font-weight: 520;
+    line-height: 1.15;
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .rto-sheet-select-wrap {
+    position: relative;
+    flex: 0 1 164px;
+    display: flex;
+    justify-content: flex-end;
+    min-width: 0;
+  }
+
+  .rto-sheet-select-wrap::after {
+    content: "";
+    position: absolute;
+    right: 1px;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    border-right: 1.5px solid var(--muted);
+    border-bottom: 1.5px solid var(--muted);
+    transform: translateY(-64%) rotate(45deg);
+    pointer-events: none;
+  }
+
+  .rto-sheet-value svg {
+    width: 13px;
+    height: 13px;
+    stroke-width: 1.8;
+    flex: 0 0 auto;
+  }
+
+  .rto-sheet-icon {
+    width: 16px;
+    height: 16px;
+    stroke-width: 1.6;
+    flex: 0 0 auto;
+    color: var(--muted);
+  }
+
+  .rto-sheet-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .rto-sheet-name {
+    color: var(--text);
+    font-weight: 520;
+  }
+
+  .rto-live-modal[hidden] {
+    display: none;
+  }
+
+  .rto-sheet-note {
+    margin: -3px 0 9px;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  .rto-sheet-field {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 10px;
+    min-height: 38px;
+    border-top: 1px solid var(--border);
+  }
+
+  .rto-sheet-field-label {
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 520;
+  }
+
+  .rto-custom-minutes {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    justify-self: end;
+  }
+
+  .rto-custom-minutes .rto-minus-prefix {
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 620;
+  }
+
+  .rto-custom-minutes input {
+    width: 44px;
+    height: 28px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: var(--surface-2);
+    color: var(--text);
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    text-align: center;
+    outline: none;
+  }
+
+  .rto-custom-minutes span {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .rto-sheet-buttons {
+    display: grid;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .rto-sheet-button {
+    width: 100%;
+    min-height: 34px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    font-size: 12px;
+    font-weight: 620;
+  }
+
+  .rto-sheet-button.primary {
+    background: var(--text);
+    color: var(--surface);
+  }
+
+  .rto-sheet-button.danger {
+    background: var(--surface);
+    color: #dc2626;
+  }
+
+  .rto-sheet-button.success {
+    border-color: #16a34a;
+    background: #16a34a;
+    color: #ffffff;
+  }
+
+  .rto-help-list {
+    display: grid;
+    gap: 8px;
+    margin-top: 2px;
+  }
+
+  .rto-help-item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 8px;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.28;
+  }
+
+  .rto-help-item svg {
+    width: 15px;
+    height: 15px;
+    margin-top: 1px;
+    stroke-width: 1.6;
+    color: var(--muted);
+  }
+
+  .rto-help-item strong {
+    display: block;
+    margin-bottom: 2px;
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 620;
+    line-height: 1.15;
+  }
+
+  .profile-stack {
+    display: grid;
+    gap: 0;
+  }
+
+  .profile-driver {
+    min-height: 48px;
+    padding: 0 0 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    container-type: inline-size;
+  }
+
+  .profile-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    overflow: hidden;
+  }
+
+  .profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .profile-avatar svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 1.5;
+  }
+
+  .profile-driver-info {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .profile-field-label {
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 560;
+    line-height: 1.1;
+    margin-bottom: 3px;
+    text-transform: uppercase;
+  }
+
+  .profile-name {
+    font-size: 16px;
+    font-size: clamp(15px, 13cqw, 17px);
+    font-weight: 650;
+    line-height: 1.12;
+    letter-spacing: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .profile-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .vehicle-card {
+    padding: 12px;
+  }
+
+  .vehicle-plate {
+    position: relative;
+    border: 2px solid #111;
+    border-radius: 8px;
+    min-height: 54px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 68px;
+    align-items: center;
+    overflow: hidden;
+    background: #fff;
+    color: #111;
+    margin-bottom: 9px;
+  }
+
+  .vehicle-plate::before,
+  .vehicle-plate::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    width: 4px;
+    height: 4px;
+    border-radius: 999px;
+    background: #111;
+    transform: translateY(-50%);
+  }
+
+  .vehicle-plate::before {
+    left: 8px;
+  }
+
+  .vehicle-plate::after {
+    right: 8px;
+  }
+
+  .vehicle-plate-part {
+    position: relative;
+    min-height: 54px;
+    border: 0;
+    background: transparent;
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: inherit;
+  }
+
+  .vehicle-plate-part svg,
+  .vehicle-cell-edit {
+    display: none;
+  }
+
+  .vehicle-plate-main {
+    padding-left: 15px;
+    font-size: 28px;
+    font-weight: 720;
+    letter-spacing: 1.2px;
+    line-height: 1;
+  }
+
+  .vehicle-region {
+    align-self: stretch;
+    min-width: 68px;
+    border-left: 2px solid #111;
+    flex-direction: column;
+    gap: 3px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .vehicle-region-code {
+    font-size: 21px;
+    line-height: 1;
+  }
+
+  .vehicle-region-country {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: .4px;
+    line-height: 1;
+  }
+
+  .vehicle-flag {
+    width: 18px;
+    height: 12px;
+    border: 1px solid #111;
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    background: #fff;
+  }
+
+  .vehicle-flag span:nth-child(1) {
+    background: #fff;
+  }
+
+  .vehicle-flag span:nth-child(2) {
+    background: #1d4ed8;
+  }
+
+  .vehicle-flag span:nth-child(3) {
+    background: #dc2626;
+  }
+
+  .vehicle-title {
+    display: block;
+    width: 100%;
+    text-align: left;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 8px 10px;
+    background: var(--surface-2);
+    margin-bottom: 8px;
+    color: inherit;
+  }
+
+  .vehicle-make-model {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+    margin-bottom: 8px;
+  }
+
+  .vehicle-make-model .vehicle-title {
+    margin-bottom: 0;
+  }
+
+  .vehicle-title-label {
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 520;
+    line-height: 1.15;
+    margin-bottom: 4px;
+  }
+
+  .vehicle-title-value {
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 650;
+    line-height: 1.15;
+  }
+
+  .vehicle-text-input {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    font-size: 15px;
+    font-weight: 650;
+    line-height: 1.15;
+    letter-spacing: 0;
+    outline: none;
+  }
+
+  .vehicle-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+    margin-bottom: 10px;
+  }
+
+  .vehicle-cell {
+    display: block;
+    width: 100%;
+    text-align: left;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 7px 9px;
+    background: var(--surface-2);
+    color: inherit;
+  }
+
+  .vehicle-cell-head {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+
+  .vehicle-cell-label {
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 520;
+    line-height: 1.15;
+  }
+
+  .vehicle-cell-value {
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 620;
+    line-height: 1.15;
+  }
+
+  .vehicle-select-wrap,
+  .vehicle-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 18px;
+  }
+
+  .vehicle-select-wrap::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    border-right: 1.5px solid var(--muted);
+    border-bottom: 1.5px solid var(--muted);
+    transform: translateY(-64%) rotate(45deg);
+    pointer-events: none;
+  }
+
+  .vehicle-select,
+  .vehicle-number-input {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 620;
+    line-height: 1.15;
+    letter-spacing: 0;
+    outline: none;
+  }
+
+  .vehicle-select {
+    -webkit-appearance: none;
+    appearance: none;
+    padding-right: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .vehicle-number-input {
+    flex: 0 0 2ch;
+    width: 2ch;
+    max-width: 2ch;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .vehicle-number-unit {
+    margin-left: 2px;
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 620;
+    line-height: 1.15;
+  }
+
+  .vehicle-change {
+    width: 100%;
+    height: 34px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--text);
+    color: var(--surface);
+    font-size: 12px;
+    font-weight: 620;
+  }
+
+</style>
+
+<div class="cards">
+  <div class="card" data-choice="shadcn-light" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="rto-preview">
+        <div class="rto-header">
+          <div>
+            <div class="rto-brand"><a class="rto-brand-link" href="https://uraltrackpro.store/CONTACTS" target="_blank" rel="noopener">УралТрекПро</a><span class="rto-support-live" hidden>Мы на связи</span></div>
+            <strong class="rto-title">Режим труда и отдыха</strong>
+          </div>
+          <div class="rto-actions">
+            <button class="rto-icon-button" type="button" data-rto-help-open aria-label="Инструкция по РТО">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9.1 9a3 3 0 1 1 5.8 1c0 2-2.9 2.4-2.9 4"/><path d="M12 18h.01"/></svg>
+            </button>
+            <button class="rto-icon-button" type="button" data-settings-open aria-label="Открыть настройки">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7"/><path d="M4 10V3"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M20 21v-5"/><path d="M20 12V3"/><path d="M2 14h4"/><path d="M10 8h4"/><path d="M18 16h4"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="rto-card rto-meter-card">
+          <div class="rto-card-status" aria-live="polite"><span class="rto-sync-dot"></span><span class="rto-card-status-text">Вождение записано</span></div>
+          <button class="rto-undo-button" type="button" data-rto-undo-open aria-label="Отменить последнее действие" onclick="event.stopPropagation()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 1 1 0 11H11"/></svg>
+          </button>
+          <div class="rto-ring">
+            <svg class="rto-progress" viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="rto-progress-track" cx="60" cy="60" r="52"></circle>
+              <circle class="rto-progress-value" cx="60" cy="60" r="52" pathLength="100"></circle>
+            </svg>
+            <div class="rto-ring-inner">
+              <div class="rto-kicker">сейчас</div>
+              <strong class="rto-mode">Вождение</strong>
+              <strong class="rto-time">4ч 18м</strong>
+              <span class="rto-caption">до остановки</span>
+            </div>
+          </div>
+          <div class="rto-status-row">
+            <span>Стоп <strong>18:22</strong></span>
+            <span>Сегодня <strong>4ч23м/9ч</strong></span>
+          </div>
+          <div class="rto-status-row">
+            <span>Неделя <strong>5ч42м/56ч</strong></span>
+            <span>2 недели <strong>5ч42м/90ч</strong></span>
+          </div>
+        </div>
+
+        <div class="rto-modes">
+          <div class="rto-toggle active">Вожд.</div>
+          <div class="rto-toggle">Перер.</div>
+          <div class="rto-toggle">Отдых</div>
+          <div class="rto-toggle">Работа</div>
+          <div class="rto-toggle">Готовн.</div>
+        </div>
+        <div class="rto-separator"></div>
+
+        <div class="rto-nav">
+          <div class="rto-nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="8.5"/></svg>
+            <div class="rto-nav-label">Режим труда<br>и отдыха</div>
+          </div>
+          <div class="rto-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14h16"/><path d="M6 14l2-6h8l2 6"/><path d="M7 14v3"/><path d="M17 14v3"/><path d="M9 8V5h6v3"/></svg>
+            <div class="rto-nav-label">Топливо<br>и расход</div>
+          </div>
+          <div class="rto-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v4"/><path d="M16 3v4"/><rect x="4" y="5.5" width="16" height="15" rx="3"/><path d="M4 10h16"/><path d="M9 15l2 2 4-5"/></svg>
+            <div class="rto-nav-label">Сроки и<br>уведомления</div>
+          </div>
+          <div class="rto-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M9 7h6"/><path d="M9 11h6"/><path d="M9 15h3"/><path d="M15 15h.01"/></svg>
+            <div class="rto-nav-label">Штрафы<br>и оплата</div>
+          </div>
+          <div class="rto-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7.5a4 4 0 1 0 8 0 4 4 0 0 0-8 0Z"/><path d="M4 21a8 8 0 0 1 16 0"/><path d="M18 8h3"/><path d="M19.5 6.5v3"/></svg>
+            <div class="rto-nav-label">Профиль<br>водителя</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A. Светлая тема</h3>
+      <p>Ближе к shadcn: Card, ToggleGroup, Separator, Button. Больше воздуха, меньше визуального веса.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="shadcn-dark" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="rto-preview dark">
+        <div class="rto-header">
+          <div>
+            <div class="rto-brand"><a class="rto-brand-link" href="https://uraltrackpro.store/CONTACTS" target="_blank" rel="noopener">УралТрекПро</a><span class="rto-support-live" hidden>Мы на связи</span></div>
+            <strong class="rto-title">Режим труда и отдыха</strong>
+          </div>
+          <div class="rto-actions">
+            <button class="rto-icon-button" type="button" data-rto-help-open aria-label="Инструкция по РТО">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9.1 9a3 3 0 1 1 5.8 1c0 2-2.9 2.4-2.9 4"/><path d="M12 18h.01"/></svg>
+            </button>
+            <button class="rto-icon-button" type="button" data-settings-open aria-label="Открыть настройки">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7"/><path d="M4 10V3"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M20 21v-5"/><path d="M20 12V3"/><path d="M2 14h4"/><path d="M10 8h4"/><path d="M18 16h4"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="rto-card rto-meter-card">
+          <div class="rto-card-status" aria-live="polite"><span class="rto-sync-dot"></span><span class="rto-card-status-text">Вождение записано</span></div>
+          <button class="rto-undo-button" type="button" data-rto-undo-open aria-label="Отменить последнее действие" onclick="event.stopPropagation()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 1 1 0 11H11"/></svg>
+          </button>
+          <div class="rto-ring">
+            <svg class="rto-progress" viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="rto-progress-track" cx="60" cy="60" r="52"></circle>
+              <circle class="rto-progress-value" cx="60" cy="60" r="52" pathLength="100"></circle>
+            </svg>
+            <div class="rto-ring-inner">
+              <div class="rto-kicker">сейчас</div>
+              <strong class="rto-mode">Вождение</strong>
+              <strong class="rto-time">4ч 18м</strong>
+              <span class="rto-caption">до остановки</span>
+            </div>
+          </div>
+          <div class="rto-status-row">
+            <span>Стоп <strong>18:22</strong></span>
+            <span>Сегодня <strong>4ч23м/9ч</strong></span>
+          </div>
+          <div class="rto-status-row">
+            <span>Неделя <strong>5ч42м/56ч</strong></span>
+            <span>2 недели <strong>5ч42м/90ч</strong></span>
+          </div>
+        </div>
+
+        <div class="rto-modes">
+          <div class="rto-toggle active">Вожд.</div>
+          <div class="rto-toggle">Перер.</div>
+          <div class="rto-toggle">Отдых</div>
+          <div class="rto-toggle">Работа</div>
+          <div class="rto-toggle">Готовн.</div>
+        </div>
+        <div class="rto-separator"></div>
+
+        <div class="rto-nav">
+          <div class="rto-nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="8.5"/></svg>
+            <div class="rto-nav-label">Режим труда<br>и отдыха</div>
+          </div>
+          <div class="rto-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14h16"/><path d="M6 14l2-6h8l2 6"/><path d="M7 14v3"/><path d="M17 14v3"/><path d="M9 8V5h6v3"/></svg>
+            <div class="rto-nav-label">Топливо<br>и расход</div>
+          </div>
+          <div class="rto-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v4"/><path d="M16 3v4"/><rect x="4" y="5.5" width="16" height="15" rx="3"/><path d="M4 10h16"/><path d="M9 15l2 2 4-5"/></svg>
+            <div class="rto-nav-label">Сроки и<br>уведомления</div>
+          </div>
+          <div class="rto-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M9 7h6"/><path d="M9 11h6"/><path d="M9 15h3"/><path d="M15 15h.01"/></svg>
+            <div class="rto-nav-label">Штрафы<br>и оплата</div>
+          </div>
+          <div class="rto-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7.5a4 4 0 1 0 8 0 4 4 0 0 0-8 0Z"/><path d="M4 21a8 8 0 0 1 16 0"/><path d="M18 8h3"/><path d="M19.5 6.5v3"/></svg>
+            <div class="rto-nav-label">Профиль<br>водителя</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B. Тёмная тема</h3>
+      <p>Та же структура для ночной темы. Нижнее меню ниже по высоте и не конкурирует с таймером.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="driver-profile" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="rto-preview">
+        <div class="rto-header">
+          <div>
+            <div class="rto-brand"><a class="rto-brand-link" href="https://uraltrackpro.store/CONTACTS" target="_blank" rel="noopener">УралТрекПро</a><span class="rto-support-live" hidden>Мы на связи</span></div>
+            <strong class="rto-title">Профиль водителя</strong>
+          </div>
+          <div class="rto-actions">
+            <button class="rto-icon-button" data-profile-help-open aria-label="Инструкция по профилю">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9.1 9a3 3 0 1 1 5.8 1c0 2-2.9 2.4-2.9 4"/><path d="M12 18h.01"/></svg>
+            </button>
+            <button class="rto-icon-button" type="button" data-settings-open aria-label="Открыть настройки">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7"/><path d="M4 10V3"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M20 21v-5"/><path d="M20 12V3"/><path d="M2 14h4"/><path d="M10 8h4"/><path d="M18 16h4"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="profile-stack">
+          <div class="rto-card vehicle-card">
+            <div class="profile-driver">
+              <div class="profile-avatar" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7.5a4 4 0 1 0 8 0 4 4 0 0 0-8 0Z"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+              </div>
+              <div class="profile-driver-info">
+                <div class="profile-field-label">ФИО</div>
+                <div class="profile-name">Иванов Сергей</div>
+              </div>
+            </div>
+            <div class="vehicle-plate">
+              <button class="vehicle-plate-part vehicle-plate-main" aria-label="Редактировать госномер">
+                А123ВС
+              </button>
+              <button class="vehicle-plate-part vehicle-region" aria-label="Редактировать регион">
+                <span class="vehicle-region-code">196</span>
+                <span class="vehicle-region-country">
+                  RUS
+                  <span class="vehicle-flag" aria-hidden="true"><span></span><span></span><span></span></span>
+                </span>
+              </button>
+            </div>
+            <div class="vehicle-make-model">
+              <label class="vehicle-title">
+                <span class="vehicle-title-label">Марка</span>
+                <input class="vehicle-text-input" aria-label="Марка автомобиля" value="КАМАЗ">
+              </label>
+              <label class="vehicle-title">
+                <span class="vehicle-title-label">Модель</span>
+                <input class="vehicle-text-input" aria-label="Модель автомобиля" value="5490">
+              </label>
+            </div>
+            <div class="vehicle-grid">
+              <div class="vehicle-cell">
+                <div class="vehicle-cell-head">
+                  <div class="vehicle-cell-label">Тип ТС</div>
+                  <button class="vehicle-cell-edit" aria-label="Редактировать тип ТС"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
+                </div>
+                <div class="vehicle-select-wrap">
+                  <select class="vehicle-select" aria-label="Тип транспортного средства">
+                    <option selected>грузовой</option>
+                    <option>легковой</option>
+                    <option>спецтехника</option>
+                  </select>
+                </div>
+              </div>
+              <div class="vehicle-cell">
+                <div class="vehicle-cell-head">
+                  <div class="vehicle-cell-label">Топливо</div>
+                  <button class="vehicle-cell-edit" aria-label="Редактировать топливо"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
+                </div>
+                <div class="vehicle-select-wrap">
+                  <select class="vehicle-select" aria-label="Тип топлива">
+                    <optgroup label="Бензин">
+                      <option>АИ-92</option>
+                      <option>АИ-95</option>
+                      <option>АИ-95 G-Drive</option>
+                      <option>АИ-98/100</option>
+                    </optgroup>
+                    <optgroup label="Дизельное топливо (ДТ)">
+                      <option selected>ДТ летнее</option>
+                      <option>ДТ зимнее</option>
+                      <option>ДТ межсезон.</option>
+                    </optgroup>
+                  </select>
+                </div>
+              </div>
+              <div class="vehicle-cell">
+                <div class="vehicle-cell-head">
+                  <div class="vehicle-cell-label">Расход на 100 км</div>
+                  <button class="vehicle-cell-edit" aria-label="Редактировать расход"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
+                </div>
+                <div class="vehicle-input-wrap">
+                  <input class="vehicle-number-input" aria-label="Расход на 100 км" inputmode="decimal" value="28">
+                  <span class="vehicle-number-unit">л</span>
+                </div>
+              </div>
+              <div class="vehicle-cell">
+                <div class="vehicle-cell-head">
+                  <div class="vehicle-cell-label">СТС</div>
+                  <button class="vehicle-cell-edit" aria-label="Редактировать СТС"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
+                </div>
+                <div class="vehicle-cell-value">66 00 123456</div>
+              </div>
+            </div>
+            <button class="vehicle-change">Сменить авто</button>
+          </div>
+        </div>
+
+        <div class="rto-separator"></div>
+        <div class="rto-nav">
+          <div class="rto-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="8.5"/></svg>
+            <div class="rto-nav-label">Режим труда<br>и отдыха</div>
+          </div>
+          <div class="rto-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14h16"/><path d="M6 14l2-6h8l2 6"/><path d="M7 14v3"/><path d="M17 14v3"/><path d="M9 8V5h6v3"/></svg>
+            <div class="rto-nav-label">Топливо<br>и расход</div>
+          </div>
+          <div class="rto-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v4"/><path d="M16 3v4"/><rect x="4" y="5.5" width="16" height="15" rx="3"/><path d="M4 10h16"/><path d="M9 15l2 2 4-5"/></svg>
+            <div class="rto-nav-label">Сроки и<br>уведомления</div>
+          </div>
+          <div class="rto-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M9 7h6"/><path d="M9 11h6"/><path d="M9 15h3"/><path d="M15 15h.01"/></svg>
+            <div class="rto-nav-label">Штрафы<br>и оплата</div>
+          </div>
+          <div class="rto-nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7.5a4 4 0 1 0 8 0 4 4 0 0 0-8 0Z"/><path d="M4 21a8 8 0 0 1 16 0"/><path d="M18 8h3"/><path d="M19.5 6.5v3"/></svg>
+            <div class="rto-nav-label">Профиль<br>водителя</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C. Профиль водителя</h3>
+      <p>ФИО без лишних кнопок, редактируемый госномер с регионом, СТС, топливо и расход. Вопросик открывает короткую инструкцию.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="settings-sheet" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="rto-preview">
+        <div class="rto-header">
+          <div>
+            <div class="rto-brand"><a class="rto-brand-link" href="https://uraltrackpro.store/CONTACTS" target="_blank" rel="noopener">УралТрекПро</a><span class="rto-support-live" hidden>Мы на связи</span></div>
+            <strong class="rto-title">Режим труда и отдыха</strong>
+          </div>
+          <div class="rto-actions">
+            <button class="rto-icon-button" type="button" data-rto-help-open aria-label="Инструкция по РТО">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9.1 9a3 3 0 1 1 5.8 1c0 2-2.9 2.4-2.9 4"/><path d="M12 18h.01"/></svg>
+            </button>
+            <button class="rto-icon-button" type="button" data-settings-open aria-label="Открыть настройки">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7"/><path d="M4 10V3"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M20 21v-5"/><path d="M20 12V3"/><path d="M2 14h4"/><path d="M10 8h4"/><path d="M18 16h4"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="rto-card rto-meter-card">
+          <div class="rto-card-status" aria-live="polite"><span class="rto-sync-dot"></span><span class="rto-card-status-text">Вождение записано</span></div>
+          <button class="rto-undo-button" type="button" data-rto-undo-open aria-label="Отменить последнее действие" onclick="event.stopPropagation()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 1 1 0 11H11"/></svg>
+          </button>
+          <div class="rto-ring">
+            <svg class="rto-progress" viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="rto-progress-track" cx="60" cy="60" r="52"></circle>
+              <circle class="rto-progress-value" cx="60" cy="60" r="52" pathLength="100"></circle>
+            </svg>
+            <div class="rto-ring-inner">
+              <div class="rto-kicker">сейчас</div>
+              <strong class="rto-mode">Вождение</strong>
+              <strong class="rto-time">4ч 18м</strong>
+              <span class="rto-caption">до остановки</span>
+            </div>
+          </div>
+          <div class="rto-status-row">
+            <span>Стоп <strong>18:22</strong></span>
+            <span>Сегодня <strong>4ч23м/9ч</strong></span>
+          </div>
+          <div class="rto-status-row">
+            <span>Неделя <strong>5ч42м/56ч</strong></span>
+            <span>2 недели <strong>5ч42м/90ч</strong></span>
+          </div>
+        </div>
+        <div class="rto-modes">
+          <div class="rto-toggle active">Вожд.</div>
+          <div class="rto-toggle">Перер.</div>
+          <div class="rto-toggle">Отдых</div>
+          <div class="rto-toggle">Работа</div>
+          <div class="rto-toggle">Готовн.</div>
+        </div>
+        <div class="rto-separator"></div>
+        <div class="rto-nav">
+          <div class="rto-nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="8.5"/></svg>
+            <div class="rto-nav-label">Режим труда<br>и отдыха</div>
+          </div>
+          <div class="rto-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14h16"/><path d="M6 14l2-6h8l2 6"/><path d="M7 14v3"/><path d="M17 14v3"/><path d="M9 8V5h6v3"/></svg>
+            <div class="rto-nav-label">Топливо<br>и расход</div>
+          </div>
+          <div class="rto-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v4"/><path d="M16 3v4"/><rect x="4" y="5.5" width="16" height="15" rx="3"/><path d="M4 10h16"/><path d="M9 15l2 2 4-5"/></svg>
+            <div class="rto-nav-label">Сроки и<br>уведомления</div>
+          </div>
+          <div class="rto-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M9 7h6"/><path d="M9 11h6"/><path d="M9 15h3"/><path d="M15 15h.01"/></svg>
+            <div class="rto-nav-label">Штрафы<br>и оплата</div>
+          </div>
+          <div class="rto-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7.5a4 4 0 1 0 8 0 4 4 0 0 0-8 0Z"/><path d="M4 21a8 8 0 0 1 16 0"/><path d="M18 8h3"/><path d="M19.5 6.5v3"/></svg>
+            <div class="rto-nav-label">Профиль<br>водителя</div>
+          </div>
+        </div>
+        <div class="rto-sheet-backdrop"></div>
+        <div class="rto-sheet">
+          <div class="rto-sheet-handle"></div>
+          <div class="rto-sheet-title">Настройки</div>
+          <div class="rto-sheet-row" onclick="event.stopPropagation()">
+            <div class="rto-sheet-label">
+              <svg class="rto-sheet-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/></svg>
+              <span class="rto-sheet-name">Рейс</span>
+            </div>
+            <span class="rto-sheet-select-wrap">
+              <select class="rto-sheet-select" aria-label="Тип рейса">
+                <option selected>Водитель</option>
+                <option>Экипаж</option>
+              </select>
+            </span>
+          </div>
+          <div class="rto-sheet-row" onclick="event.stopPropagation()">
+            <div class="rto-sheet-label">
+              <svg class="rto-sheet-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18"/><path d="M12 3a14 14 0 0 0 0 18"/></svg>
+              <span class="rto-sheet-name">Часовой пояс</span>
+            </div>
+            <span class="rto-sheet-select-wrap">
+              <select class="rto-sheet-select" aria-label="Часовой пояс">
+                <option>UTC-12 Линия даты</option>
+                <option>UTC-11 Самоа</option>
+                <option>UTC-10 Гавайи</option>
+                <option>UTC-9 Аляска</option>
+                <option>UTC-8 Лос-Анджелес</option>
+                <option>UTC-7 Денвер</option>
+                <option>UTC-6 Чикаго</option>
+                <option>UTC-5 Нью-Йорк</option>
+                <option>UTC-4 Атлантика</option>
+                <option>UTC-3 Буэнос-Айрес</option>
+                <option>UTC-2 Средняя Атлантика</option>
+                <option>UTC-1 Азоры</option>
+                <option>UTC+0 Лондон</option>
+                <option>UTC+1 Берлин</option>
+                <option>UTC+2 Калининград</option>
+                <option>UTC+3 Москва</option>
+                <option>UTC+4 Самара</option>
+                <option selected>UTC+5 Екатеринбург</option>
+                <option>UTC+6 Омск</option>
+                <option>UTC+7 Красноярск</option>
+                <option>UTC+8 Иркутск</option>
+                <option>UTC+9 Якутск</option>
+                <option>UTC+10 Владивосток</option>
+                <option>UTC+11 Магадан</option>
+                <option>UTC+12 Камчатка</option>
+                <option>UTC+13 Тонга</option>
+                <option>UTC+14 Кирибати</option>
+              </select>
+            </span>
+          </div>
+          <div class="rto-sheet-row" onclick="event.stopPropagation()">
+            <div class="rto-sheet-label">
+              <svg class="rto-sheet-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.5A7.5 7.5 0 0 1 9.5 3.5a8 8 0 1 0 11 11Z"/></svg>
+              <span class="rto-sheet-name">Тема</span>
+            </div>
+            <span class="rto-sheet-select-wrap">
+              <select class="rto-sheet-select" aria-label="Тема">
+                <option selected>Светлая</option>
+                <option>Тёмная</option>
+              </select>
+            </span>
+          </div>
+          <button class="rto-sheet-row" type="button" data-export-xls onclick="event.stopPropagation()">
+            <div class="rto-sheet-label">
+              <svg class="rto-sheet-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+              <span class="rto-sheet-name">Экспорт</span>
+            </div>
+            <span class="rto-sheet-value">xls</span>
+          </button>
+          <a class="rto-sheet-row" href="https://uraltrackpro.ru/wp-content/uploads/2026/04/pamyatka-rto.pdf" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+            <div class="rto-sheet-label">
+              <svg class="rto-sheet-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7Z"/><path d="M14 2v5h5"/><path d="M9 13h6"/><path d="M9 17h4"/></svg>
+              <span class="rto-sheet-name">Памятка РТО</span>
+            </div>
+            <span class="rto-sheet-value">PDF</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>D. Шестерёнка</h3>
+      <p>Вопросик открывает инструкцию. Настройки открываются bottom sheet: рейс, часовой пояс, тема, экспорт xls и памятка без ухода с главного экрана.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Фиксация</h3>
+  <p>При реализации используем shadcn-состав: <strong>Card</strong> для блока таймера, <strong>ToggleGroup</strong> для режимов как единый segmented control, <strong>Separator</strong> перед меню, <strong>Button</strong> для инструкции, отмены последнего действия и настроек, <strong>Drawer</strong> для нижнего sheet. Вопросик открывает краткую инструкцию РТО. Кнопка отмены в карточке таймера открывает sheet коррекции: «Начал раньше» с выбором -5, -10, -15 минут или ручным вводом минут, плюс действие «Отменить последнее». Настройки содержат рейс с выбором Водитель/Экипаж, часовой пояс с русскими подписями, активную тему, экспорт xls и ссылку на памятку РТО PDF; выбираемые строки выглядят как кнопки со стрелкой вниз, при открытии sheet задний фон мягко затемняется и блюрится. Короткий статус записи появляется в карточке таймера на 5 секунд после смены режима. Нижнее меню: <strong>РТО</strong>, <strong>Топливо и расход</strong>, <strong>Сроки и уведомления</strong>, <strong>Штрафы и оплата</strong>, <strong>Профиль водителя</strong>; активный раздел подсвечивается фиолетовым. Профиль v1: круглая аватарка с fallback-иконкой, ФИО, редактируемый госномер в стиле российского номера с регионом, RUS и флагом, марка и модель, тип ТС, топливо, расход, СТС и смена авто. Автомобильные поля редактируются по нажатию, но без лишних карандашей. Таймер РТО — SVG-кольцо обратного отсчёта: полоса уменьшается по окружности от верхней точки. Цвет круга: норма — фиолетовый, предупреждение — жёлтый, стоп — красный.</p>
+</div>
+
+<script>
+  function toggleSelect(card) {
+    document.querySelectorAll('.card').forEach((item) => item.classList.remove('selected'));
+    card.classList.add('selected');
+  }
+
+  function setupRtoModal(modal) {
+    let closeTimer = null;
+    const resetActionButtons = () => {
+      modal.querySelectorAll('.rto-sheet-button.success').forEach((button) => {
+        button.classList.remove('success');
+        button.textContent = button.dataset.rtoDefaultLabel;
+      });
+    };
+    const closeModal = () => {
+      clearTimeout(closeTimer);
+      modal.setAttribute('hidden', '');
+      resetActionButtons();
+    };
+
+    modal.addEventListener('click', (event) => {
+      event.stopPropagation();
+      if (event.target.closest('[data-rto-modal-close]')) {
+        closeModal();
+        return;
+      }
+
+      const actionButton = event.target.closest('[data-rto-action]');
+      if (actionButton) {
+        clearTimeout(closeTimer);
+        resetActionButtons();
+        actionButton.classList.add('success');
+        actionButton.textContent = actionButton.dataset.rtoDoneLabel;
+        closeTimer = setTimeout(closeModal, 1200);
+      }
+    });
+
+    const earlySelect = modal.querySelector('.rto-early-select');
+    const customInput = modal.querySelector('.rto-custom-minutes input');
+
+    earlySelect?.addEventListener('change', (event) => {
+      if (event.target.value === 'custom') customInput?.focus();
+    });
+
+    customInput?.addEventListener('focus', () => {
+      if (earlySelect) earlySelect.value = 'custom';
+    });
+
+    customInput?.addEventListener('input', () => {
+      if (earlySelect) earlySelect.value = 'custom';
+    });
+  }
+
+  function ensureRtoModal(preview, type) {
+    const existing = preview.querySelector(`[data-rto-modal="${type}"]`);
+    if (existing) return existing;
+
+    const undoSheet = `
+      <div class="rto-live-modal" data-rto-modal="undo" hidden>
+        <div class="rto-sheet-backdrop" data-rto-modal-close></div>
+        <div class="rto-sheet" role="dialog" aria-modal="true" aria-label="Коррекция записи">
+          <div class="rto-sheet-handle"></div>
+          <div class="rto-sheet-title">Коррекция записи</div>
+          <p class="rto-sheet-note">Используй, если режим был включен позже фактического начала или нужно отменить последнюю запись.</p>
+          <div class="rto-sheet-field">
+            <div class="rto-sheet-field-label">Начал раньше</div>
+            <span class="rto-sheet-select-wrap">
+              <select class="rto-sheet-select rto-early-select" aria-label="Начал раньше на">
+                <option value="5">-5 мин</option>
+                <option value="10">-10 мин</option>
+                <option value="15">-15 мин</option>
+                <option value="custom">указать время</option>
+              </select>
+            </span>
+          </div>
+          <div class="rto-sheet-field">
+            <div class="rto-sheet-field-label">Свой интервал</div>
+            <span class="rto-custom-minutes">
+              <span class="rto-minus-prefix" aria-hidden="true">-</span>
+              <input type="number" inputmode="numeric" min="1" max="180" placeholder="20" aria-label="Свой интервал">
+              <span>мин</span>
+            </span>
+          </div>
+          <div class="rto-sheet-buttons">
+            <button class="rto-sheet-button primary" type="button" data-rto-action="early" data-rto-default-label="Начал раньше" data-rto-done-label="✓ Начало скорректировано">Начал раньше</button>
+            <button class="rto-sheet-button danger" type="button" data-rto-action="undo" data-rto-default-label="Отменить последнее" data-rto-done-label="✓ Последнее отменено">Отменить последнее</button>
+          </div>
+        </div>
+      </div>`;
+
+    const helpSheet = `
+      <div class="rto-live-modal" data-rto-modal="help" hidden>
+        <div class="rto-sheet-backdrop" data-rto-modal-close></div>
+        <div class="rto-sheet" role="dialog" aria-modal="true" aria-label="Инструкция РТО">
+          <div class="rto-sheet-handle"></div>
+          <div class="rto-sheet-title">Как пользоваться РТО</div>
+          <div class="rto-help-list">
+            <div class="rto-help-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="8.5"/></svg>
+              <div><strong>Вожд.</strong>Нажимай, когда начал движение. Таймер показывает, сколько осталось до обязательной остановки.</div>
+            </div>
+            <div class="rto-help-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M8 8h8"/><path d="M9 16h6"/></svg>
+              <div><strong>Перер.</strong>Нажимай на короткой остановке или технологическом перерыве, когда это не полноценный отдых.</div>
+            </div>
+            <div class="rto-help-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14h16"/><path d="M6 14v4"/><path d="M18 14v4"/><path d="M8 10h8a4 4 0 0 1 4 4"/><path d="M6 14a4 4 0 0 1 4-4"/></svg>
+              <div><strong>Отдых</strong>Нажимай на ежедневный или длительный отдых, когда водитель свободен от работы.</div>
+            </div>
+            <div class="rto-help-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 6h6"/><path d="M17 3v6"/><path d="M4 7h8"/><path d="M4 12h12"/><path d="M4 17h12"/></svg>
+              <div><strong>Работа</strong>Нажимай, когда выполняешь погрузку, разгрузку, оформление документов, ремонт или другую работу без движения.</div>
+            </div>
+            <div class="rto-help-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v6l3 2"/><circle cx="12" cy="12" r="8.5"/><path d="M17 3l2 2"/></svg>
+              <div><strong>Готовн.</strong>Нажимай, когда ждёшь рейс, очередь, второго водителя или команду диспетчера и должен быть готов выехать.</div>
+            </div>
+            <div class="rto-help-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 1 1 0 11H11"/></svg>
+              <div><strong>Коррекция</strong>Кнопка со стрелкой исправляет последнюю запись: можно указать, что начал раньше, или отменить последнее действие.</div>
+            </div>
+            <div class="rto-help-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 7h18s-3 0-3-7"/><path d="M10 19a2 2 0 0 0 4 0"/></svg>
+              <div><strong>Уведомления</strong>Приложение предупредит, когда пора сделать остановку, когда заканчивается допустимое время вождения, когда нужно начать отдых и когда подходит срок документа или оплаты.</div>
+            </div>
+            <div class="rto-help-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14h16"/><path d="M4 10h16"/><path d="M4 18h10"/></svg>
+              <div><strong>Статистика</strong>Строки Стоп, Сегодня, Неделя и 2 недели помогают видеть лимиты и не доводить режим до нарушения.</div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+
+    const profileHelpSheet = `
+      <div class="rto-live-modal" data-rto-modal="profileHelp" hidden>
+        <div class="rto-sheet-backdrop" data-rto-modal-close></div>
+        <div class="rto-sheet" role="dialog" aria-modal="true" aria-label="Инструкция профиля">
+          <div class="rto-sheet-handle"></div>
+          <div class="rto-sheet-title">Как заполнить профиль</div>
+          <div class="rto-help-list">
+            <div class="rto-help-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7.5a4 4 0 1 0 8 0 4 4 0 0 0-8 0Z"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+              <div><strong>ФИО</strong>Нажми на имя водителя и введи данные так, как они будут попадать в отчёты.</div>
+            </div>
+            <div class="rto-help-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h5"/><path d="M7 13h10"/></svg>
+              <div><strong>Госномер</strong>Редактируются номер и регион, формат остаётся похожим на российский номер.</div>
+            </div>
+            <div class="rto-help-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14h16"/><path d="M6 14l2-6h8l2 6"/><path d="M7 14v3"/><path d="M17 14v3"/></svg>
+              <div><strong>Авто</strong>Марка, модель, тип ТС, топливо, расход и СТС меняются нажатием на нужное поле.</div>
+            </div>
+            <div class="rto-help-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h11l3 4v6H3v-5l4-5Z"/><path d="M7 17a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/><path d="M17 17a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/></svg>
+              <div><strong>Сменить авто</strong>Используется, когда водитель пересел на другую машину.</div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+
+    const sheet = type === 'undo' ? undoSheet : type === 'profileHelp' ? profileHelpSheet : helpSheet;
+    preview.insertAdjacentHTML('beforeend', sheet);
+    const modal = preview.querySelector(`[data-rto-modal="${type}"]`);
+    setupRtoModal(modal);
+    return modal;
+  }
+
+  const rtoModes = {
+    'Вожд.': { mode: 'Вождение', status: 'Вождение записано' },
+    'Перер.': { mode: 'Перерыв', status: 'Перерыв записан' },
+    'Отдых': { mode: 'Отдых', status: 'Отдых записан' },
+    'Работа': { mode: 'Работа', status: 'Работа записана' },
+    'Готовн.': { mode: 'Готовность', status: 'Готовность записана' },
+  };
+
+  const rtoStatusTimers = new WeakMap();
+
+  function updateSupportStatus() {
+    const yekaterinburgHour = Number(new Intl.DateTimeFormat('ru-RU', {
+      timeZone: 'Asia/Yekaterinburg',
+      hour: '2-digit',
+      hour12: false,
+    }).format(new Date()));
+    const isWorkingTime = yekaterinburgHour >= 8 && yekaterinburgHour < 17;
+    document.querySelectorAll('.rto-support-live').forEach((badge) => {
+      badge.hidden = !isWorkingTime;
+    });
+  }
+
+  updateSupportStatus();
+  setInterval(updateSupportStatus, 60000);
+
+  document.querySelectorAll('.rto-brand-link').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      event.stopPropagation();
+    });
+  });
+
+  document.querySelectorAll('.rto-modes').forEach((group) => {
+    group.addEventListener('click', (event) => {
+      const toggle = event.target.closest('.rto-toggle');
+      if (!toggle) return;
+      event.stopPropagation();
+
+      const meta = rtoModes[toggle.textContent.trim()];
+      if (!meta) return;
+
+      group.querySelectorAll('.rto-toggle').forEach((item) => item.classList.remove('active'));
+      toggle.classList.add('active');
+
+      const preview = group.closest('.rto-preview');
+      preview.querySelector('.rto-mode').textContent = meta.mode;
+
+      const status = preview.querySelector('.rto-card-status');
+      const statusText = status?.querySelector('.rto-card-status-text');
+      if (!status || !statusText) return;
+
+      statusText.textContent = meta.status;
+      status.classList.add('is-visible');
+
+      clearTimeout(rtoStatusTimers.get(status));
+      rtoStatusTimers.set(status, setTimeout(() => {
+        status.classList.remove('is-visible');
+      }, 5000));
+    });
+  });
+
+  document.querySelectorAll('[data-settings-open]').forEach((button) => {
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      document.querySelector('[data-choice="settings-sheet"]')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  });
+
+  document.querySelectorAll('[data-rto-undo-open]').forEach((button) => {
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const preview = button.closest('.rto-preview');
+      ensureRtoModal(preview, 'undo').removeAttribute('hidden');
+    });
+  });
+
+  document.querySelectorAll('[data-rto-help-open]').forEach((button) => {
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const preview = button.closest('.rto-preview');
+      ensureRtoModal(preview, 'help').removeAttribute('hidden');
+    });
+  });
+
+
+  document.querySelectorAll('[data-export-xls]').forEach((button) => {
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+    });
+  });
+
+  document.querySelectorAll('[data-profile-help-open]').forEach((button) => {
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const preview = button.closest('.rto-preview');
+      ensureRtoModal(preview, 'profileHelp').removeAttribute('hidden');
+    });
+  });
+</script>
+</body>
+</html>
