@@ -14,6 +14,7 @@ import {
   ReceiptText,
   RotateCcw,
   Settings2,
+  ShieldCheck,
   Truck,
   UserRound,
   X,
@@ -50,6 +51,7 @@ const navItems: Array<{ id: ViewId; label: string; icon: typeof Clock3 }> = [
 ];
 
 const supportChatUrl = "https://max.ru/u/f9LHodD0cOI05uuXKOEbgubLgi5ulbx6vBSZkvnKFBQr2W7XTI2hCGA83yU";
+const consentStorageKey = "uraltrackpro:max-miniapp:pd-consent";
 const remainingDriveMinutes = 258;
 
 const tripOptions: PickerOption[] = [
@@ -170,10 +172,15 @@ export function App() {
   const [correctionOpen, setCorrectionOpen] = useState(false);
   const [pickerOpen, setPickerOpen] = useState<PickerKind | null>(null);
   const [actionDone, setActionDone] = useState<string | null>(null);
+  const [consentAccepted, setConsentAccepted] = useState(false);
 
   const activeMode = useMemo(() => modes.find((item) => item.id === mode) ?? modes[0], [mode]);
   const timerTone = getTimerTone(remainingDriveMinutes);
   const pageTitle = view === "profile" ? "Профиль водителя" : "Режим труда и отдыха";
+
+  useEffect(() => {
+    setConsentAccepted(window.localStorage.getItem(consentStorageKey) === "accepted");
+  }, []);
 
   useEffect(() => {
     if (!statusVisible) return;
@@ -192,6 +199,16 @@ export function App() {
       setActionDone(null);
       setCorrectionOpen(false);
     }, 1200);
+  }
+
+  function acceptConsent() {
+    window.localStorage.setItem(consentStorageKey, "accepted");
+    setConsentAccepted(true);
+  }
+
+  function declineConsent() {
+    window.history.back();
+    window.setTimeout(() => window.close(), 180);
   }
 
   return (
@@ -287,6 +304,8 @@ export function App() {
       )}
 
       {historyOpen && <HistorySheet onClose={() => setHistoryOpen(false)} />}
+
+      {!consentAccepted && <ConsentModal onAccept={acceptConsent} onDecline={declineConsent} />}
     </div>
   );
 }
@@ -867,5 +886,42 @@ function HistorySheet({ onClose }: { onClose: () => void }) {
         ))}
       </div>
     </Sheet>
+  );
+}
+
+function ConsentModal({ onAccept, onDecline }: { onAccept: () => void; onDecline: () => void }) {
+  return (
+    <div className="consent-backdrop" role="presentation">
+      <section className="consent-modal" role="dialog" aria-modal="true" aria-labelledby="consent-title">
+        <button className="consent-close" type="button" aria-label="Закрыть mini-app" onClick={onDecline}>
+          <X />
+        </button>
+        <div className="consent-badge">
+          <ShieldCheck />
+        </div>
+        <h2 id="consent-title">Согласие на обработку персональных данных</h2>
+        <p>Для продолжения работы подтвердите согласие на обработку персональных данных.</p>
+
+        <div className="consent-links">
+          <a href="https://uraltrackpro.store/position" target="_blank" rel="noreferrer">
+            <FileText />
+            Положение
+          </a>
+          <a href="https://uraltrackpro.store/agreement" target="_blank" rel="noreferrer">
+            <FileText />
+            Согласие
+          </a>
+          <a href="https://uraltrackpro.ru/wp-content/uploads/2026/04/rekvizity-ip-kovyazin.pdf" target="_blank" rel="noreferrer">
+            <FileText />
+            Реквизиты
+          </a>
+        </div>
+
+        <button className="consent-button" type="button" onClick={onAccept}>
+          <Check />
+          Согласен и продолжаю
+        </button>
+      </section>
+    </div>
   );
 }
